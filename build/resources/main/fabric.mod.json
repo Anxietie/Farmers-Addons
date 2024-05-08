@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "farmaddon",
+  "version": "1.0-SNAPSHOT",
+  "name": "Farmers Addons",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/anxietie/Farmers-Addons.git"
+  },
+  "license": "GPL-3.0",
+  "icon": "assets/farmaddon/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.me.farmaddon.client.FarmersAddonsClient"
+    ],
+    "main": [
+      "com.me.farmaddon.FarmersAddons"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "fabric": "*",
+    "minecraft": "1.20.1"
+  }
+}

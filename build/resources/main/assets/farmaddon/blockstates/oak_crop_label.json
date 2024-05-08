@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "farmaddon:block/oak_crop_label",
+      "x": -90,
+      "y": -90
+    },
+    "facing=north": {
+      "model": "farmaddon:block/oak_crop_label",
+      "x": -90,
+      "y": 180
+    },
+    "facing=south": {
+      "model": "farmaddon:block/oak_crop_label",
+      "x": -90
+    },
+    "facing=west": {
+      "model": "farmaddon:block/oak_crop_label",
+      "x": -90,
+      "y": 90
+    }
+  }
+}
