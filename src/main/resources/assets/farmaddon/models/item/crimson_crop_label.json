@@ -1,0 +1,6 @@
+{
+	"parent": "farmaddon:block/crop_label",
+	"textures": {
+		"texture": "minecraft:block/crimson_planks"
+	}
+}
