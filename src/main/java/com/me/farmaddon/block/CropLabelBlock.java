@@ -1,19 +1,18 @@
 package com.me.farmaddon.block;
 
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableMap;
 import com.me.farmaddon.block.entity.CropLabelBlockEntity;
+import com.me.farmaddon.registry.BlockEntityRegister;
 import com.me.farmaddon.registry.BlockRegister;
-import net.fabricmc.fabric.impl.content.registry.util.ImmutableCollectionUtils;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.*;
@@ -26,8 +25,8 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -35,7 +34,6 @@ import java.util.stream.Collectors;
 import static com.me.farmaddon.FarmersAddons.LOGGER;
 
 public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvider {
-	// private static final TrackedData<ItemStack> ITEM_STACK = DataTracker.registerData(CropLabelEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
 	public static final DirectionProperty FACING;
 	private static final VoxelShape EAST_SHAPE;
 	private static final VoxelShape WEST_SHAPE;
@@ -43,9 +41,9 @@ public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvid
 	private static final VoxelShape NORTH_SHAPE;
 	private final Map<BlockState, VoxelShape> shapesByState;
 
-	private static final Collection<ItemStack> ALLOWED_ITEMS;
+	private static final Collection<Item> ALLOWED_ITEMS;
 
-	public CropLabelBlock(BlockRegister.Planks material, AbstractBlock.Settings settings) {
+	public CropLabelBlock(AbstractBlock.Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH));
 		this.shapesByState = ImmutableMap.copyOf(this.stateManager.getStates().stream().collect(Collectors.toMap(Function.identity(), CropLabelBlock::getShapeForState)));
@@ -68,6 +66,9 @@ public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvid
 			if (t instanceof CropLabelBlockEntity blockEntity) {
 				Item item = player.getStackInHand(hand).getItem();
 
+				if (!ALLOWED_ITEMS.contains(item)) return ActionResult.PASS;
+
+				/*
 				// wheat edge case
 				if (item.getDefaultStack().isOf(Items.WHEAT)) {
 					blockEntity.setHandledCrop(item.getDefaultStack());
@@ -78,6 +79,7 @@ public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvid
 				if (!(item instanceof BlockItem)) return ActionResult.PASS;
 				Block block = ((BlockItem) item).getBlock();
 				if (!(block instanceof PlantBlock) && !(block instanceof GourdBlock)) return ActionResult.PASS;
+				 */
 
 				blockEntity.setHandledCrop(item.getDefaultStack());
 				blockEntity.markDirty();
@@ -128,6 +130,10 @@ public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvid
 		return new CropLabelBlockEntity(pos, state);
 	}
 
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> blockEntityType) {
+		return checkType(blockEntityType, BlockEntityRegister.CROP_LABEL_BLOCK_ENTITY, CropLabelBlockEntity::tick);
+	}
+
 	private static VoxelShape getShapeForState(BlockState state) {
 		return switch (state.get(FACING)) {
 			default -> NORTH_SHAPE;
@@ -144,6 +150,10 @@ public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvid
 		SOUTH_SHAPE = Block.createCuboidShape(5, 0, 12, 11, 7, 15);
 		NORTH_SHAPE = Block.createCuboidShape(5, 0, 1, 11, 7, 4);
 
-		ALLOWED_ITEMS = null; // TODO
+		// compat with other mods
+		ALLOWED_ITEMS = Registries.ITEM.stream().filter((item) ->
+				item.getDefaultStack().isOf(Items.WHEAT) ||
+				(item instanceof BlockItem && ((((BlockItem) item).getBlock() instanceof PlantBlock) || (((BlockItem) item).getBlock() instanceof GourdBlock))))
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 }

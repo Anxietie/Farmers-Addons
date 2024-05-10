@@ -1,6 +1,7 @@
-package com.me.farmaddon.block.entity;
+package com.me.farmaddon.render.block.entity;
 
 import com.me.farmaddon.block.CropLabelBlock;
+import com.me.farmaddon.block.entity.CropLabelBlockEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;

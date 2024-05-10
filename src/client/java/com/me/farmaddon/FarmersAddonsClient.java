@@ -1,6 +1,6 @@
 package com.me.farmaddon;
 
-import com.me.farmaddon.block.entity.CropLabelBlockEntityRenderer;
+import com.me.farmaddon.render.block.entity.CropLabelBlockEntityRenderer;
 import com.me.farmaddon.registry.BlockEntityRegister;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;

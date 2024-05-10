@@ -37,7 +37,7 @@ public class BlockRegister {
 	}
 
 	private static Block createBlock(Planks planks) {
-		return new CropLabelBlock(planks, FabricBlockSettings.copyOf(planks.getBlock())
+		return new CropLabelBlock(FabricBlockSettings.copyOf(planks.getBlock())
 				.noCollision()
 				.pistonBehavior(PistonBehavior.DESTROY)
 				.strength(0.5f));
