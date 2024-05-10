@@ -130,9 +130,7 @@ public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvid
 		NORTH_SHAPE = Block.createCuboidShape(5, 0, 1, 11, 7, 4);
 
 		// compat with other mods
-		ALLOWED_ITEMS = Registries.ITEM.stream().filter((item) ->
-				item.getDefaultStack().isOf(Items.WHEAT) ||
-				(item instanceof BlockItem && ((((BlockItem) item).getBlock() instanceof PlantBlock) || (((BlockItem) item).getBlock() instanceof GourdBlock))))
+		ALLOWED_ITEMS = Registries.ITEM.stream().filter((item) -> item instanceof BlockItem && ((((BlockItem) item).getBlock() instanceof PlantBlock) || (((BlockItem) item).getBlock() instanceof GourdBlock)))
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 }
