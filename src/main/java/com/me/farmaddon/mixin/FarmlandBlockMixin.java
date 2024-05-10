@@ -1,5 +1,6 @@
 package com.me.farmaddon.mixin;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FarmlandBlock;
 import net.minecraft.entity.Entity;
@@ -14,14 +15,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FarmlandBlock.class)
-public abstract class FarmlandBlockMixin extends BlockMixin {
+public abstract class FarmlandBlockMixin extends Block {
+    public FarmlandBlockMixin(Settings settings) { super(settings); }
+
     @Inject(method = "onLandedUpon", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FarmlandBlock;setToDirt(Lnet/minecraft/entity/Entity;Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V"), cancellable = true)
-    public void onLandedUpon(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance, CallbackInfo ci) {
+    public void inject$onLandedUpon(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance, CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity) entity;
         ItemStack stack = player.getInventory().getArmorStack(0);
 
         if (stack.isOf(Items.LEATHER_BOOTS)) {
-            this.onLandedUpon(world, state, pos, entity, fallDistance);
+            super.onLandedUpon(world, state, pos, entity, fallDistance);
             ci.cancel();
         }
     }

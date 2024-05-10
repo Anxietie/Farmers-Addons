@@ -1,7 +1,6 @@
 package com.me.farmaddon.block.entity;
 
 import com.me.farmaddon.registry.BlockEntityRegister;
-import com.mojang.authlib.minecraft.client.MinecraftClient;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
@@ -13,13 +12,10 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import org.apache.logging.log4j.core.pattern.TextRenderer;
 import org.jetbrains.annotations.Nullable;
 
 public class CropLabelBlockEntity extends BlockEntity {
 	private ItemStack handledCrop = Items.AIR.getDefaultStack();
-	private boolean renderName = false;
 
 	public CropLabelBlockEntity(BlockPos pos, BlockState state) {
 		super(BlockEntityRegister.CROP_LABEL_BLOCK_ENTITY, pos, state);
@@ -31,12 +27,7 @@ public class CropLabelBlockEntity extends BlockEntity {
 	public void setHandledCrop(ItemStack stack) {
 		this.handledCrop = stack;
 	}
-	public boolean shouldRenderName() { return renderName; }
-	public void setRenderFlag(boolean flag) { this.renderName = flag; }
-
-	public static void tick(World world, BlockPos pos, BlockState state, CropLabelBlockEntity blockEntity) {
-		if (world.isClient()) return;
-	}
+	public boolean shouldRenderLabel() { return !handledCrop.isOf(Items.AIR); }
 
 	@Override
 	public void markDirty() {
@@ -47,7 +38,6 @@ public class CropLabelBlockEntity extends BlockEntity {
 	@Override
 	public void writeNbt(NbtCompound nbt) {
 		nbt.putString("internal_crop", Registries.ITEM.getId(handledCrop.getItem()).getPath());
-		nbt.putBoolean("render_name", renderName);
 
 		super.writeNbt(nbt);
 	}
@@ -57,7 +47,6 @@ public class CropLabelBlockEntity extends BlockEntity {
 		super.readNbt(nbt);
 
 		handledCrop = Registries.ITEM.get(new Identifier(nbt.getString("internal_crop"))).getDefaultStack();
-		renderName = nbt.getBoolean("render_name");
 	}
 
 	@Nullable

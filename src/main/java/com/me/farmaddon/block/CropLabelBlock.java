@@ -2,12 +2,8 @@ package com.me.farmaddon.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.me.farmaddon.block.entity.CropLabelBlockEntity;
-import com.me.farmaddon.registry.BlockEntityRegister;
-import com.me.farmaddon.registry.BlockRegister;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -30,8 +26,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static com.me.farmaddon.FarmersAddons.LOGGER;
 
 public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvider {
 	public static final DirectionProperty FACING;
@@ -66,24 +60,13 @@ public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvid
 			if (t instanceof CropLabelBlockEntity blockEntity) {
 				Item item = player.getStackInHand(hand).getItem();
 
-				if (!ALLOWED_ITEMS.contains(item)) return ActionResult.PASS;
-
-				/*
-				// wheat edge case
-				if (item.getDefaultStack().isOf(Items.WHEAT)) {
+				if (ALLOWED_ITEMS.contains(item) || item.getDefaultStack().isOf(Items.AIR)) {
 					blockEntity.setHandledCrop(item.getDefaultStack());
 					blockEntity.markDirty();
 					return ActionResult.SUCCESS;
 				}
 
-				if (!(item instanceof BlockItem)) return ActionResult.PASS;
-				Block block = ((BlockItem) item).getBlock();
-				if (!(block instanceof PlantBlock) && !(block instanceof GourdBlock)) return ActionResult.PASS;
-				 */
-
-				blockEntity.setHandledCrop(item.getDefaultStack());
-				blockEntity.markDirty();
-				return ActionResult.SUCCESS;
+				return ActionResult.PASS;
 			}
 		}
 
@@ -128,10 +111,6 @@ public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvid
 	@Override
 	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
 		return new CropLabelBlockEntity(pos, state);
-	}
-
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> blockEntityType) {
-		return checkType(blockEntityType, BlockEntityRegister.CROP_LABEL_BLOCK_ENTITY, CropLabelBlockEntity::tick);
 	}
 
 	private static VoxelShape getShapeForState(BlockState state) {
