@@ -1,6 +1,3 @@
 {
-	"parent": "farmaddon:block/crop_label",
-	"textures": {
-		"texture": "minecraft:block/mangrove_planks"
-	}
+	"parent": "farmaddon:block/mangrove_crop_label"
 }

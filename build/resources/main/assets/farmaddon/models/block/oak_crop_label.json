@@ -1,6 +1,6 @@
 {
   "parent": "farmaddon:block/crop_label",
   "textures": {
-    "#0": "minecraft:block/oak_planks"
+    "texture": "minecraft:block/oak_planks"
   }
 }

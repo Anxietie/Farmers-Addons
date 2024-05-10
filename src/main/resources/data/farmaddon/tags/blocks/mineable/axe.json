@@ -1,0 +1,16 @@
+{
+	"replace": "false",
+	"values": [
+		"farmaddon:acacia_crop_label",
+		"farmaddon:bamboo_crop_label",
+		"farmaddon:birch_crop_label",
+		"farmaddon:cherry_crop_label",
+		"farmaddon:crimson_crop_label",
+		"farmaddon:dark_oak_crop_label",
+		"farmaddon:jungle_crop_label",
+		"farmaddon:mangrove_crop_label",
+		"farmaddon:oak_crop_label",
+		"farmaddon:spruce_crop_label",
+		"farmaddon:warped_crop_label"
+	]
+}

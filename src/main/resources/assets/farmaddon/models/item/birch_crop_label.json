@@ -1,6 +1,3 @@
 {
-	"parent": "farmaddon:block/crop_label",
-	"textures": {
-		"texture": "minecraft:block/birch_planks"
-	}
+	"parent": "farmaddon:block/birch_crop_label"
 }

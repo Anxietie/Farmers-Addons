@@ -6,22 +6,32 @@
   "description": "",
   "authors": [],
   "contact": {
-    "repo": "https://github.com/anxietie/Farmers-Addons.git"
+    "homepage": "https://modrinth.com/mod/farmers-addons",
+    "sources": "https://github.com/anxietie/Farmers-Addons.git",
+    "issues": "https://github.com/anxietie/Farmers-Addons/issues"
   },
   "license": "GPL-3.0",
   "icon": "assets/farmaddon/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
-      "com.me.farmaddon.client.FarmersAddonsClient"
+      "com.me.farmaddon.FarmersAddonsClient"
     ],
     "main": [
       "com.me.farmaddon.FarmersAddons"
     ]
   },
+  "mixins": [
+    "farmaddon.mixins.json",
+    {
+      "config": "farmaddon.client.mixins.json",
+      "environment": "client"
+    }
+  ],
   "depends": {
     "fabricloader": ">=${loader_version}",
-    "fabric": "*",
-    "minecraft": "${minecraft_version}"
+    "fabric-api": ">=${fabric_version}",
+    "minecraft": "${minecraft_version}",
+    "java": ">=17"
   }
 }

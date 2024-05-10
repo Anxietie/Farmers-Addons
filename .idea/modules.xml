@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Farmers-Addons.git.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Farmers-Addons.git.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Farmers-Addons.git.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Farmers-Addons.git.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/farmers-addons.git.client.iml" filepath="$PROJECT_DIR$/.idea/modules/farmers-addons.git.client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/farmers-addons.git.main.iml" filepath="$PROJECT_DIR$/.idea/modules/farmers-addons.git.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/farmers-addons.git.test.iml" filepath="$PROJECT_DIR$/.idea/modules/farmers-addons.git.test.iml" />
     </modules>
   </component>
 </project>

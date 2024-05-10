@@ -1,0 +1,21 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"group": "crop_label",
+	"key": {
+		"#": {
+			"item": "minecraft:crimson_planks"
+		},
+		"@": {
+			"item": "minecraft:stick"
+		}
+	},
+	"pattern": [
+		"#",
+		"@"
+	],
+	"result": {
+		"item": "farmaddon:crimson_crop_label"
+	},
+	"show_notification": true
+}

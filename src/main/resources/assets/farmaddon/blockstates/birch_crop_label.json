@@ -1,3 +1,19 @@
 {
-	"parent": "farmaddon:block/birch_crop_label"
+	"variants": {
+		"facing=east": {
+			"model": "farmaddon:block/birch_crop_label",
+			"y": 90
+		},
+		"facing=north": {
+			"model": "farmaddon:block/birch_crop_label"
+		},
+		"facing=south": {
+			"model": "farmaddon:block/birch_crop_label",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "farmaddon:block/birch_crop_label",
+			"y": 270
+		}
+	}
 }

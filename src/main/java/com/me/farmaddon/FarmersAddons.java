@@ -1,6 +1,8 @@
 package com.me.farmaddon;
 
+import com.me.farmaddon.registry.BlockEntityRegister;
 import com.me.farmaddon.registry.BlockRegister;
+import com.me.farmaddon.registry.ItemRegister;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,5 +17,12 @@ public class FarmersAddons implements ModInitializer {
 
         BlockRegister.registerBlocks();
         LOGGER.info("blocks registered");
+
+        BlockEntityRegister.registerBlockEntities();
+        LOGGER.info("block entities registered");
+
+	    ItemRegister.registerItems();
+        ItemRegister.registerItemGroups();
+        LOGGER.info("items registered");
     }
 }
