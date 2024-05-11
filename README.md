@@ -7,8 +7,10 @@
 - Landing on farmland with leather boots will not set it to dirt
 
 ## Compatibility
-Any items extend `PlantBlock` or `GourdBlock` can be labeled with a crop marker, 
-so mods that add items like this will be accounted for.
+Any crops that extend `PlantBlock`, `GourdBlock`, or is in `BlockTags.CROPS` can be labeled with a crop marker, 
+so mods that add crops with a blockitem are included.<br>
+#### Tested Compatibility
+- [Croptopia](https://github.com/ExcessiveAmountsOfZombies/Croptopia) :heavy_check_mark:
 
 ## Dependencies
-- Fabric API
+- [Fabric API](https://github.com/FabricMC/fabric)
