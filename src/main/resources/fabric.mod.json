@@ -3,8 +3,10 @@
   "id": "farmaddon",
   "version": "${version}",
   "name": "Farmers Addons",
-  "description": "",
-  "authors": [],
+  "description": "Adds crop markers/labelers and lets you fall on farmland with leather boots on without ruining it",
+  "authors": [
+    "Anxietie"
+  ],
   "contact": {
     "homepage": "https://modrinth.com/mod/farmers-addons",
     "sources": "https://github.com/anxietie/Farmers-Addons.git",

@@ -37,10 +37,15 @@ public class BlockRegister {
 	}
 
 	private static Block createBlock(Planks planks) {
-		return new CropLabelBlock(FabricBlockSettings.copyOf(planks.getBlock())
+		FabricBlockSettings settings = FabricBlockSettings.copyOf(planks.getBlock())
 				.noCollision()
 				.pistonBehavior(PistonBehavior.DESTROY)
-				.strength(0.5f));
+				.strength(0.5f);
+
+		if (planks != Planks.WARPED_PLANKS && planks != Planks.CRIMSON_PLANKS)
+			settings.burnable();
+
+		return new CropLabelBlock(settings);
 	}
 
 	public static Collection<Block> getBlocks() { return BLOCKS; }

@@ -37,7 +37,9 @@ public class CropLabelBlockEntity extends BlockEntity {
 
 	@Override
 	public void writeNbt(NbtCompound nbt) {
-		nbt.putString("internal_crop", Registries.ITEM.getId(handledCrop.getItem()).getPath());
+		Identifier id = Registries.ITEM.getId(handledCrop.getItem());
+		nbt.putString("internal_crop_namespace", id.getNamespace());
+		nbt.putString("internal_crop_path", id.getPath());
 
 		super.writeNbt(nbt);
 	}
@@ -46,7 +48,10 @@ public class CropLabelBlockEntity extends BlockEntity {
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
 
-		handledCrop = Registries.ITEM.get(new Identifier(nbt.getString("internal_crop"))).getDefaultStack();
+		String namespace = nbt.getString("internal_crop_namespace");
+		String path = nbt.getString("internal_crop_path");
+
+		handledCrop = Registries.ITEM.get(new Identifier(namespace, path)).getDefaultStack();
 	}
 
 	@Nullable

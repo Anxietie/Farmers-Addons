@@ -8,21 +8,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FarmersAddons implements ModInitializer {
-    public static final String MODID = "farmaddon";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
+	public static final String MODID = "farmaddon";
+	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 
-    @Override
-    public void onInitialize() {
-        LOGGER.info("initializing");
+	@Override
+	public void onInitialize() {
+		LOGGER.info("initializing");
 
-        BlockRegister.registerBlocks();
-        LOGGER.info("blocks registered");
+		BlockRegister.registerBlocks();
+		LOGGER.info("blocks registered");
 
-        BlockEntityRegister.registerBlockEntities();
-        LOGGER.info("block entities registered");
+		BlockEntityRegister.registerBlockEntities();
+		LOGGER.info("block entities registered");
 
-	    ItemRegister.registerItems();
-        ItemRegister.registerItemGroups();
-        LOGGER.info("items registered");
-    }
+		ItemRegister.registerItems();
+		ItemRegister.registerItemGroups();
+		LOGGER.info("items registered");
+	}
 }

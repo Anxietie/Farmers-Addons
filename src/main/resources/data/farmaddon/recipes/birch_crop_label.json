@@ -15,7 +15,8 @@
 		"@"
 	],
 	"result": {
-		"item": "farmaddon:birch_crop_label"
+		"item": "farmaddon:birch_crop_label",
+		"count": 4
 	},
 	"show_notification": true
 }

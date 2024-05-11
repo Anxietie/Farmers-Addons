@@ -7,7 +7,6 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -21,8 +20,6 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -34,8 +31,6 @@ public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvid
 	private static final VoxelShape SOUTH_SHAPE;
 	private static final VoxelShape NORTH_SHAPE;
 	private final Map<BlockState, VoxelShape> shapesByState;
-
-	private static final Collection<Item> ALLOWED_ITEMS;
 
 	public CropLabelBlock(AbstractBlock.Settings settings) {
 		super(settings);
@@ -60,49 +55,45 @@ public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvid
 			if (t instanceof CropLabelBlockEntity blockEntity) {
 				Item item = player.getStackInHand(hand).getItem();
 
-				if (ALLOWED_ITEMS.contains(item) || item.getDefaultStack().isOf(Items.AIR)) {
+				if (validCrop(item) || item.getDefaultStack().isOf(Items.AIR)) {
 					blockEntity.setHandledCrop(item.getDefaultStack());
 					blockEntity.markDirty();
 					return ActionResult.SUCCESS;
 				}
-
-				return ActionResult.PASS;
 			}
 		}
 
-		return ActionResult.PASS;
+		return ActionResult.CONSUME;
+	}
+
+	private boolean validCrop(Item item) {
+		return item instanceof BlockItem && (
+				(((BlockItem) item).getBlock() instanceof PlantBlock) ||
+				(((BlockItem) item).getBlock() instanceof GourdBlock) ||
+				(((BlockItem) item).getBlock().getDefaultState().isIn(BlockTags.CROPS))
+			);
 	}
 
 	@Override
 	public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-		return world.getBlockState(pos.down()).isIn(BlockTags.DIRT);
+		BlockState blockState = world.getBlockState(pos.down());
+		return blockState.isIn(BlockTags.DIRT) ||
+				blockState.isOf(Blocks.DIRT_PATH) ||
+				blockState.isOf(Blocks.FARMLAND);
 	}
 
 	@Override
-	public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
-		return true;
-	}
-
+	public boolean isTransparent(BlockState state, BlockView world, BlockPos pos) { return true; }
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
-	}
-
+	public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) { return true; }
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
-		return BlockRenderType.MODEL;
-	}
-
+	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) { builder.add(FACING); }
 	@Override
-	public BlockState rotate(BlockState state, BlockRotation rotation) {
-		return state.with(FACING, rotation.rotate(state.get(FACING)));
-	}
-
+	public BlockRenderType getRenderType(BlockState state) { return BlockRenderType.MODEL; }
 	@Override
-	public BlockState mirror(BlockState state, BlockMirror mirror) {
-		return state.rotate(mirror.getRotation(state.get(FACING)));
-	}
-
+	public BlockState rotate(BlockState state, BlockRotation rotation) { return state.with(FACING, rotation.rotate(state.get(FACING))); }
+	@Override
+	public BlockState mirror(BlockState state, BlockMirror mirror) { return state.rotate(mirror.getRotation(state.get(FACING))); }
 	public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
 		return !state.canPlaceAt(world, pos) ? Blocks.AIR.getDefaultState() : super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
 	}
@@ -128,9 +119,5 @@ public class CropLabelBlock extends BlockWithEntity implements BlockEntityProvid
 		WEST_SHAPE = Block.createCuboidShape(1, 0, 5, 4, 7, 11);
 		SOUTH_SHAPE = Block.createCuboidShape(5, 0, 12, 11, 7, 15);
 		NORTH_SHAPE = Block.createCuboidShape(5, 0, 1, 11, 7, 4);
-
-		// compat with other mods
-		ALLOWED_ITEMS = Registries.ITEM.stream().filter((item) -> item instanceof BlockItem && ((((BlockItem) item).getBlock() instanceof PlantBlock) || (((BlockItem) item).getBlock() instanceof GourdBlock)))
-				.collect(Collectors.toCollection(ArrayList::new));
 	}
 }
