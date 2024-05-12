@@ -1,7 +1,7 @@
 # FARMER'S ADDONS
 
 ## Features
-#### Crop Markers/Labels:
+#### Crop Markers/Labels
 - Right click crop markers with crop to change marked crop
 - Right click crop markers with nothing in hand to reset it
 - Hovering over crop marker will display the name of the marked crop
