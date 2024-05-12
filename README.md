@@ -16,7 +16,7 @@
 Any crops that extend `PlantBlock`, `GourdBlock`, or is in `BlockTags.CROPS` can be labeled with a crop marker, 
 so mods that add crops with a blockitem are included.<br>
 #### Tested Compatibility
-- [Croptopia](https://github.com/ExcessiveAmountsOfZombies/Croptopia): heavy_check_mark:
+- [Croptopia](https://github.com/ExcessiveAmountsOfZombies/Croptopia) :heavy_check_mark:
 
 ## Dependencies
 - [Fabric API](https://github.com/FabricMC/fabric)
