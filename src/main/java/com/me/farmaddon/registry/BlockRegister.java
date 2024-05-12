@@ -10,19 +10,22 @@ import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.me.farmaddon.FarmersAddons.MODID;
 
 public class BlockRegister {
-	private static final Collection<Block> BLOCKS = new ArrayList<>();
+	private static final Map<Identifier, Block> BLOCKS = new HashMap<>();
 
 	public static void registerBlocks() {
 		createBlocks();
 	}
 
 	private static Block register(String id, Block block) {
-		BLOCKS.add(block);
-		return Registry.register(Registries.BLOCK, new Identifier(MODID, id), block);
+		Identifier identifier = new Identifier(MODID, id);
+		BLOCKS.put(identifier, block);
+		return Registry.register(Registries.BLOCK, identifier, block);
 	}
 
 	private static void createBlocks() {
@@ -38,9 +41,9 @@ public class BlockRegister {
 
 	private static Block createBlock(Planks planks) {
 		FabricBlockSettings settings = FabricBlockSettings.copyOf(planks.getBlock())
+				.breakInstantly()
 				.noCollision()
-				.pistonBehavior(PistonBehavior.DESTROY)
-				.strength(0.5f);
+				.pistonBehavior(PistonBehavior.DESTROY);
 
 		if (planks != Planks.WARPED_PLANKS && planks != Planks.CRIMSON_PLANKS)
 			settings.burnable();
@@ -48,7 +51,7 @@ public class BlockRegister {
 		return new CropLabelBlock(settings);
 	}
 
-	public static Collection<Block> getBlocks() { return BLOCKS; }
+	public static Map<Identifier, Block> getBlocks() { return BLOCKS; }
 
 	public enum Planks {
 		ACACIA_PLANKS("acacia_planks"),

@@ -4,6 +4,8 @@
 	"package": "com.me.farmaddon.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
+		"DamageEnchantmentMixin",
+		"EnchantmentHelperMixin",
 		"FarmlandBlockMixin"
 	],
 	"injectors": {

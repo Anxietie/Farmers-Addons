@@ -1,0 +1,21 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "equipment",
+	"key": {
+		"#": {
+			"item": "minecraft:stick"
+		},
+		"@": {
+			"item": "minecraft:diamond"
+		}
+	},
+	"pattern": [
+		"@@@",
+		"  #",
+		" # "
+	],
+	"result": {
+		"item": "farmaddon:diamond_scythe"
+	},
+	"show_notification": true
+}

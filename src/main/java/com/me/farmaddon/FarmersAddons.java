@@ -1,5 +1,7 @@
 package com.me.farmaddon;
 
+import com.me.farmaddon.events.AttackBlockEvent;
+import com.me.farmaddon.events.UseBlockEvent;
 import com.me.farmaddon.registry.BlockEntityRegister;
 import com.me.farmaddon.registry.BlockRegister;
 import com.me.farmaddon.registry.ItemRegister;
@@ -24,5 +26,9 @@ public class FarmersAddons implements ModInitializer {
 		ItemRegister.registerItems();
 		ItemRegister.registerItemGroups();
 		LOGGER.info("items registered");
+
+		AttackBlockEvent.registerBlockAttacks();
+		UseBlockEvent.registerBlockUses();
+		LOGGER.info("events registered");
 	}
 }

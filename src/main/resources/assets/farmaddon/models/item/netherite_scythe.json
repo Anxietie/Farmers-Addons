@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/handheld",
+	"textures": {
+		"layer0": "farmaddon:item/netherite_scythe"
+	}
+}

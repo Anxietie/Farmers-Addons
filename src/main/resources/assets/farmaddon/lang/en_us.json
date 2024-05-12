@@ -9,5 +9,11 @@
   "block.farmaddon.mangrove_crop_label": "Mangrove Crop Label",
   "block.farmaddon.oak_crop_label": "Oak Crop Label",
   "block.farmaddon.spruce_crop_label": "Spruce Crop Label",
-  "block.farmaddon.warped_crop_label": "Warped Crop Label"
+  "block.farmaddon.warped_crop_label": "Warped Crop Label",
+  "item.farmaddon.wooden_scythe": "Wooden Scythe",
+  "item.farmaddon.stone_scythe": "Stone Scythe",
+  "item.farmaddon.iron_scythe": "Iron Scythe",
+  "item.farmaddon.diamond_scythe": "Diamond Scythe",
+  "item.farmaddon.golden_scythe": "Golden Scythe",
+  "item.farmaddon.netherite_scythe": "Netherite Scythe"
 }
