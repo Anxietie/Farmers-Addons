@@ -14,7 +14,7 @@
 
 ## Compatibility
 Any crops that extend `PlantBlock`, `GourdBlock`, or is in `BlockTags.CROPS` can be labeled with a crop marker, 
-so mods that add crops with a blockitem are included.<br>
+so mods that add crops with a blockitem are included. Similarly, any crop that is in `BlockTags.CROPS` can be harvested with a scythe.
 #### Tested Compatibility
 - [Croptopia](https://github.com/ExcessiveAmountsOfZombies/Croptopia) :heavy_check_mark:
 
