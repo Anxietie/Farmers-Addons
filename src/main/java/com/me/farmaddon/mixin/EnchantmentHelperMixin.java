@@ -20,10 +20,11 @@ import java.util.List;
 public abstract class EnchantmentHelperMixin {
 	@Unique
 	private static final List<Enchantment> APPLICABLE_ENCHANTMENTS = ImmutableList.of( // applicable in enchantment table
-				Enchantments.SHARPNESS,
-				Enchantments.UNBREAKING,
-				Enchantments.VANISHING_CURSE
-			);
+			Enchantments.FORTUNE,
+			Enchantments.SHARPNESS,
+			Enchantments.UNBREAKING,
+			Enchantments.VANISHING_CURSE
+	);
 
 	@Inject(method = "getPossibleEntries", at = @At("HEAD"), cancellable = true)
 	private static void getPossibleEntries(int power, ItemStack stack, boolean treasureAllowed, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir) {

@@ -23,12 +23,13 @@ public abstract class FarmlandBlockMixin extends Block {
 
     @Inject(method = "onLandedUpon", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FarmlandBlock;setToDirt(Lnet/minecraft/entity/Entity;Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V"), cancellable = true)
     public void onLandedUpon(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance, CallbackInfo ci) {
-        PlayerEntity player = (PlayerEntity) entity;
-        ItemStack stack = player.getInventory().getArmorStack(0);
+        if (entity instanceof PlayerEntity player) {
+            ItemStack stack = player.getInventory().getArmorStack(0);
 
-        if (stack.isOf(Items.LEATHER_BOOTS)) {
-            super.onLandedUpon(world, state, pos, entity, fallDistance);
-            ci.cancel();
+            if (stack.isOf(Items.LEATHER_BOOTS)) {
+                super.onLandedUpon(world, state, pos, entity, fallDistance);
+                ci.cancel();
+            }
         }
     }
 

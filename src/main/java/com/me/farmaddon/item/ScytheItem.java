@@ -52,32 +52,49 @@ public class ScytheItem extends ToolItem {
 					if (!playerEntity.isCreative()) stack.damage(1, Random.create(), (ServerPlayerEntity) playerEntity);
 				}
 
-				int r = Math.max(0, Math.min(EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack) + 1, 5));
-				for (BlockPos blockPos : BlockPos.iterateOutwards(pos, r, 0, r)) {
-					BlockState blockState = world.getBlockState(blockPos);
-					if (isHarvestableCrop(blockState)) {
-						List<ItemStack> drops = Block.getDroppedStacks(blockState, (ServerWorld) world, blockPos, null);
-						ItemStack mainDrop = drops.get(0);
-						if (mainDrop != null) world.spawnEntity(new ItemEntity(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), mainDrop));
-
-						for (int i = 1; i < drops.size(); i++) {
-							ItemStack drop = drops.get(i);
-							int count = (int) (Math.random() * drop.getCount());
-							drop.setCount(count);
-
-							world.spawnEntity(new ItemEntity(world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), drop));
-							world.setBlockState(blockPos, ((CropBlock) blockState.getBlock()).withAge(0));
-							((ServerPlayerEntity) playerEntity).playSound(SoundEvents.BLOCK_CROP_BREAK, SoundCategory.BLOCKS, 0.5f, 1.0f);
-							playerEntity.spawnSweepAttackParticles();
-						}
-					}
-				}
+				int r = Math.max(0, Math.min(EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack) + 1, Enchantments.SHARPNESS.getMaxLevel()));
+				int f = Math.max(0, Math.min(EnchantmentHelper.getLevel(Enchantments.FORTUNE, stack) + 1, Enchantments.FORTUNE.getMaxLevel()));
+				harvest(world, pos, playerEntity, r, f);
 
 				return ActionResult.SUCCESS;
 			}
 		}
 
 		return super.useOnBlock(context);
+	}
+
+	private void harvest(World world, BlockPos pos, PlayerEntity playerEntity, int radius, int rerolls) {
+		for (BlockPos blockPos : BlockPos.iterateOutwards(pos, radius, 0, radius)) {
+			BlockState blockState = world.getBlockState(blockPos);
+			if (isHarvestableCrop(blockState)) {
+				List<ItemStack> drops = Block.getDroppedStacks(blockState, (ServerWorld) world, blockPos, null);
+				ItemStack mainDrop = drops.get(0);
+				if (mainDrop != null) {
+					Block.dropStack(world, blockPos, mainDrop);
+					ItemStack copy = mainDrop.copy();
+					for (; rerolls > 0; rerolls--) {
+						copy.setCount((int) (Math.random() * 2));
+						Block.dropStack(world, blockPos, copy);
+					}
+				}
+
+				for (int i = 1; i < drops.size(); i++) {
+					ItemStack drop = drops.get(i);
+
+					if (!drop.isOf(blockState.getBlock().getPickStack(world, blockPos, blockState).getItem())) {
+						Block.dropStack(world, blockPos, drop);
+						continue;
+					}
+
+					int count = (int) (Math.random() * drop.getCount());
+					drop.setCount(count);
+					Block.dropStack(world, blockPos, drop);
+					world.setBlockState(blockPos, ((CropBlock) blockState.getBlock()).withAge(0));
+					playerEntity.playSound(SoundEvents.BLOCK_CROP_BREAK, SoundCategory.BLOCKS, 1f, 1f);
+					playerEntity.spawnSweepAttackParticles();
+				}
+			}
+		}
 	}
 
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
