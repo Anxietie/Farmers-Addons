@@ -3,7 +3,7 @@
   "id": "farmaddon",
   "version": "${version}",
   "name": "Farmers Addons",
-  "description": "Adds crop markers/labelers and lets you fall on farmland with leather boots on without ruining it",
+  "description": "Adds crop markers/labelers and scythes for harvesting; farmland doesn't turn to dirt when landed on if wearing leather boots; composters drop 8 bone meal",
   "authors": [
     "Anxietie"
   ],
