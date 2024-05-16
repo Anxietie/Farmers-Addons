@@ -2,7 +2,6 @@ package com.me.farmaddon.events;
 
 import com.me.farmaddon.item.ScytheItem;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;

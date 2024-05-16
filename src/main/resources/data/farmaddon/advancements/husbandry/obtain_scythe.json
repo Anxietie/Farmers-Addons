@@ -1,0 +1,46 @@
+{
+	"parent": "minecraft:husbandry/plant_seed",
+	"criteria": {
+		"scythe": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"farmaddon:wooden_scythe",
+							"farmaddon:stone_scythe",
+							"farmaddon:iron_scythe",
+							"farmaddon:diamond_scythe",
+							"farmaddon:golden_scythe",
+							"farmaddon:netherite_scythe"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		}
+	},
+	"display": {
+		"announce_to_chat": true,
+		"description": {
+			"translate": "advancements.husbandry.scythe.description"
+		},
+		"hidden": false,
+		"icon": {
+			"item": "farmaddon:wooden_scythe",
+			"nbt": "{Damage:0}"
+		},
+		"show_toast": true,
+		"title": {
+			"translate": "advancements.husbandry.scythe.title"
+		}
+	},
+	"requirements": [
+		[
+			"scythe"
+		]
+	],
+	"rewards": {
+		"experience": 100
+	},
+	"sends_telemetry_event": true
+}

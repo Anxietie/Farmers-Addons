@@ -15,5 +15,7 @@
   "item.farmaddon.iron_scythe": "Iron Scythe",
   "item.farmaddon.diamond_scythe": "Diamond Scythe",
   "item.farmaddon.golden_scythe": "Golden Scythe",
-  "item.farmaddon.netherite_scythe": "Netherite Scythe"
+  "item.farmaddon.netherite_scythe": "Netherite Scythe",
+  "advancements.husbandry.scythe.title": "Bountiful Harvest",
+  "advancements.husbandry.scythe.description": "Obtain a scythe of any variant"
 }

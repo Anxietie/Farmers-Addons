@@ -7,7 +7,6 @@ import net.minecraft.block.*;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -23,6 +22,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
 
@@ -49,11 +49,12 @@ public class ScytheItem extends ToolItem {
 				ItemStack stack = context.getStack();
 				if (playerEntity instanceof ServerPlayerEntity) {
 					Criteria.ITEM_USED_ON_BLOCK.trigger((ServerPlayerEntity) playerEntity, pos, stack);
-					if (!playerEntity.isCreative()) stack.damage(1, Random.create(), (ServerPlayerEntity) playerEntity);
+					if (!playerEntity.isCreative())
+						stack.damage(1, playerEntity, p -> p.sendToolBreakStatus(context.getHand()));
 				}
 
 				int r = Math.max(0, Math.min(EnchantmentHelper.getLevel(Enchantments.SHARPNESS, stack) + 1, Enchantments.SHARPNESS.getMaxLevel()));
-				int f = Math.max(0, Math.min(EnchantmentHelper.getLevel(Enchantments.FORTUNE, stack) + 1, Enchantments.FORTUNE.getMaxLevel()));
+				int f = Math.max(0, Math.min(EnchantmentHelper.getLevel(Enchantments.FORTUNE, stack), Enchantments.FORTUNE.getMaxLevel()));
 				harvest(world, pos, playerEntity, r, f);
 
 				return ActionResult.SUCCESS;
@@ -80,6 +81,11 @@ public class ScytheItem extends ToolItem {
 
 				for (int i = 1; i < drops.size(); i++) {
 					ItemStack drop = drops.get(i);
+					BlockState state = ((CropBlock) (blockState.getBlock())).withAge(0);
+					world.setBlockState(blockPos, state);
+					world.emitGameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Emitter.of(playerEntity, state));
+					playerEntity.playSound(SoundEvents.BLOCK_CROP_BREAK, SoundCategory.BLOCKS, 1f, 1f);
+					playerEntity.spawnSweepAttackParticles();
 
 					if (!drop.isOf(blockState.getBlock().getPickStack(world, blockPos, blockState).getItem())) {
 						Block.dropStack(world, blockPos, drop);
@@ -89,9 +95,6 @@ public class ScytheItem extends ToolItem {
 					int count = (int) (Math.random() * drop.getCount());
 					drop.setCount(count);
 					Block.dropStack(world, blockPos, drop);
-					world.setBlockState(blockPos, ((CropBlock) blockState.getBlock()).withAge(0));
-					playerEntity.playSound(SoundEvents.BLOCK_CROP_BREAK, SoundCategory.BLOCKS, 1f, 1f);
-					playerEntity.spawnSweepAttackParticles();
 				}
 			}
 		}
@@ -100,8 +103,6 @@ public class ScytheItem extends ToolItem {
 	public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
 		return slot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(slot);
 	}
-
-	public boolean canMine(BlockState state, World world, BlockPos pos, PlayerEntity miner) { return world.getBlockState(pos).isIn(BlockTags.CROPS); }
 
 	public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		stack.damage(1, attacker, (e) -> {
