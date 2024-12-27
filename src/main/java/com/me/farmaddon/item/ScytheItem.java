@@ -22,6 +22,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEvents;
 import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
@@ -68,34 +69,21 @@ public class ScytheItem extends ToolItem {
 		for (BlockPos blockPos : BlockPos.iterateOutwards(pos, radius, 0, radius)) {
 			BlockState blockState = world.getBlockState(blockPos);
 			if (isHarvestableCrop(blockState)) {
-				List<ItemStack> drops = Block.getDroppedStacks(blockState, (ServerWorld) world, blockPos, null);
-				ItemStack mainDrop = drops.get(0);
+				ItemStack mainDrop = Block.getDroppedStacks(blockState, (ServerWorld) world, blockPos, null).get(0);
 				if (mainDrop != null) {
-					Block.dropStack(world, blockPos, mainDrop);
 					ItemStack copy = mainDrop.copy();
-					for (; rerolls > 0; rerolls--) {
+					for (; rerolls > 1; rerolls--) {
 						copy.setCount((int) (Math.random() * 2));
 						Block.dropStack(world, blockPos, copy);
 					}
 				}
+				Block.dropStacks(blockState, world, blockPos, null, playerEntity, new ItemStack(this));
+				BlockState state = ((CropBlock) (blockState.getBlock())).withAge(0);
+				world.setBlockState(blockPos, state);
+				world.emitGameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Emitter.of(playerEntity, state));
 
-				for (int i = 1; i < drops.size(); i++) {
-					ItemStack drop = drops.get(i);
-					BlockState state = ((CropBlock) (blockState.getBlock())).withAge(0);
-					world.setBlockState(blockPos, state);
-					world.emitGameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Emitter.of(playerEntity, state));
-					playerEntity.playSound(SoundEvents.BLOCK_CROP_BREAK, SoundCategory.BLOCKS, 1f, 1f);
-					playerEntity.spawnSweepAttackParticles();
-
-					if (!drop.isOf(blockState.getBlock().getPickStack(world, blockPos, blockState).getItem())) {
-						Block.dropStack(world, blockPos, drop);
-						continue;
-					}
-
-					int count = (int) (Math.random() * drop.getCount());
-					drop.setCount(count);
-					Block.dropStack(world, blockPos, drop);
-				}
+				playerEntity.playSound(SoundEvents.BLOCK_CROP_BREAK, SoundCategory.BLOCKS, 1f, 1f);
+				playerEntity.spawnSweepAttackParticles();
 			}
 		}
 	}

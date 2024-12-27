@@ -25,7 +25,7 @@ public class ItemRegister {
 
 	private static final ItemGroup FARMING_ADDONS = FabricItemGroup.builder()
 			.icon(() -> new ItemStack(Items.WHEAT))
-			.displayName(Text.literal("Farmers Addons"))
+			.displayName(Text.literal("Farmer's Addons"))
 			.entries((((displayContext, entries) -> entries.addAll(ITEMS))))
 			.build();
 
