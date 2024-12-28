@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(ComposterBlock.class)
 public abstract class ComposterBlockMixin {
 	@ModifyVariable(method = "emptyFullComposter", at = @At("STORE"))
-	private static ItemEntity modifyItemEntity(ItemEntity original) {
+	private static ItemEntity farmaddon$modifyBonemealCount(ItemEntity original) {
 		ItemStack stack = new ItemStack(Items.BONE_MEAL);
 		stack.setCount(8);
 		original.setStack(stack);

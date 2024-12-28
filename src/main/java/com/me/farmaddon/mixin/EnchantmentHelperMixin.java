@@ -27,7 +27,7 @@ public abstract class EnchantmentHelperMixin {
 	);
 
 	@Inject(method = "getPossibleEntries", at = @At("HEAD"), cancellable = true)
-	private static void getPossibleEntries(int power, ItemStack stack, boolean treasureAllowed, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir) {
+	private static void farmaddon$getScytheEnchantmentEntries(int power, ItemStack stack, boolean treasureAllowed, CallbackInfoReturnable<List<EnchantmentLevelEntry>> cir) {
 		if (stack.getItem() instanceof ScytheItem) {
 			List<EnchantmentLevelEntry> enchantments = new ArrayList<>();
 

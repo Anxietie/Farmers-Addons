@@ -19,10 +19,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FarmlandBlock.class)
 public abstract class FarmlandBlockMixin extends Block {
-    public FarmlandBlockMixin(Settings settings) { super(settings); }
+    private FarmlandBlockMixin(Settings settings) { super(settings); }
 
     @Inject(method = "onLandedUpon", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/FarmlandBlock;setToDirt(Lnet/minecraft/entity/Entity;Lnet/minecraft/block/BlockState;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V"), cancellable = true)
-    public void onLandedUpon(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance, CallbackInfo ci) {
+    public void farmaddon$cancelFarmlandTrample(World world, BlockState state, BlockPos pos, Entity entity, float fallDistance, CallbackInfo ci) {
         if (entity instanceof PlayerEntity player) {
             ItemStack stack = player.getInventory().getArmorStack(0);
 
@@ -34,7 +34,7 @@ public abstract class FarmlandBlockMixin extends Block {
     }
 
     @Inject(method = "canPlaceAt", at = @At("HEAD"), cancellable = true)
-    public void canPlaceAt(BlockState state, WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+    public void farmaddon$cropLabelOnFarmland(BlockState state, WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         BlockState upState = world.getBlockState(pos.up());
         if (upState.getBlock() instanceof CropLabelBlock) cir.setReturnValue(true);
     }

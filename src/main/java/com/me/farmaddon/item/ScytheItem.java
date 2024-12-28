@@ -27,7 +27,7 @@ import net.minecraft.world.event.GameEvent;
 
 import java.util.List;
 
-public class ScytheItem extends ToolItem {
+public class ScytheItem extends ToolItem implements Vanishable {
 	private final Multimap<EntityAttribute, EntityAttributeModifier> attributeModifiers;
 
 	public ScytheItem(ToolMaterial material, float attackDamage, float attackSpeed, Item.Settings settings) {
